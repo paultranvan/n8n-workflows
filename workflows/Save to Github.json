@@ -56,7 +56,7 @@
       "main": [
         [
           {
-            "node": "Merge Items",
+            "node": "isDiffOrNew",
             "type": "main",
             "index": 0
           }
@@ -68,17 +68,6 @@
         [
           {
             "node": "Create new file",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge Items": {
-      "main": [
-        [
-          {
-            "node": "isDiffOrNew",
             "type": "main",
             "index": 0
           }
@@ -194,7 +183,7 @@
         ],
         [
           {
-            "node": "Merge Items",
+            "node": "isDiffOrNew",
             "type": "main",
             "index": 0
           }
@@ -321,8 +310,8 @@
       "name": "Get File",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        1440,
-        720
+        1460,
+        680
       ],
       "typeVersion": 4.2
     },
@@ -335,7 +324,6 @@
             "caseSensitive": true,
             "typeValidation": "strict"
           },
-          "combinator": "and",
           "conditions": [
             {
               "id": "45ce825e-9fa6-430c-8931-9aaf22c42585",
@@ -357,7 +345,8 @@
               "leftValue": "={{ $json.error }}",
               "rightValue": ""
             }
-          ]
+          ],
+          "combinator": "and"
         },
         "options": {}
       },
@@ -371,26 +360,15 @@
       "typeVersion": 2
     },
     {
-      "parameters": {},
-      "id": "add82208-f08d-46f7-80f3-91ef760a158c",
-      "name": "Merge Items",
-      "type": "n8n-nodes-base.merge",
-      "position": [
-        1240,
-        1000
-      ],
-      "typeVersion": 2
-    },
-    {
       "parameters": {
-        "jsCode": "const orderJsonKeys = (jsonObj) => {\n  const ordered = {};\n  Object.keys(jsonObj)\n    .sort()\n    .forEach((key) => {\n      console.log(\"key : \", key);\n      ordered[key] = jsonObj[key];\n    });\n  return ordered;\n};\n\n// Check if file returned with content\nif (Object.keys($input.all()[0].json).includes(\"content\")) {\n  // Decode base64 content and parse JSON\n  const origWorkflow = JSON.parse(\n    Buffer.from($input.all()[0].json.content, \"base64\").toString(),\n  );\n  const n8nWorkflow = $input.all()[1].json;\n\n  // Order JSON objects\n  const orderedOriginal = orderJsonKeys(origWorkflow);\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  // Determine difference\n  if (JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual)) {\n    $input.all()[0].json.github_status = \"same\";\n  } else {\n    $input.all()[0].json.github_status = \"different\";\n    $input.all()[0].json.n8n_data_stringy = JSON.stringify(\n      orderedActual,\n      null,\n      2,\n    );\n  }\n  $input.all()[0].json.content_decoded = orderedOriginal;\n  // No file returned / new workflow\n} else if (Object.keys($input.all()[0].json).includes(\"data\")) {\n  const origWorkflow = JSON.parse($input.all()[0].json.data);\n  const n8nWorkflow = $input.all()[1].json;\n\n  // Order JSON objects\n  const orderedOriginal = orderJsonKeys(origWorkflow);\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  // Determine difference\n  if (JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual)) {\n    $input.all()[0].json.github_status = \"same\";\n  } else {\n    $input.all()[0].json.github_status = \"different\";\n    $input.all()[0].json.n8n_data_stringy = JSON.stringify(\n      orderedActual,\n      null,\n      2,\n    );\n  }\n  $input.all()[0].json.content_decoded = orderedOriginal;\n} else {\n  // Order JSON object\n  const n8nWorkflow = $input.all()[1].json;\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  // Proper formatting\n  $input.all()[0].json.github_status = \"new\";\n  $input.all()[0].json.n8n_data_stringy = JSON.stringify(\n    orderedActual,\n    null,\n    2,\n  );\n}\n\n// Return items\nreturn $input.all();\n"
+        "jsCode": "const orderJsonKeys = (jsonObj) => {\n  const ordered = {};\n  Object.keys(jsonObj)\n    .sort()\n    .forEach((key) => {\n      ordered[key] = jsonObj[key];\n    });\n  return ordered;\n};\n\n\n// Check if file returned with content\nif (Object.keys($input.all()[0].json).includes(\"content\")) {\n  // Decode base64 content and parse JSON\n  const origWorkflow = JSON.parse(\n    Buffer.from($input.all()[0].json.content, \"base64\").toString(),\n  );\n  const n8nWorkflow = $('n8n').first().json;\n\n  // Order JSON objects\n  const orderedOriginal = orderJsonKeys(origWorkflow);\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  console.log('original ', orderedOriginal);\n  console.log('actual ', orderedActual);\n\n  // Determine difference\n  if (JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual)) {\n    console.log('SAME')\n    $input.all()[0].json.github_status = \"same\";\n  } else {\n    console.log('DIFFERENT')\n    $input.all()[0].json.github_status = \"different\";\n    $input.all()[0].json.n8n_data_stringy = JSON.stringify(\n      orderedActual,\n      null,\n      2,\n    );\n  }\n  $input.all()[0].json.content_decoded = orderedOriginal;\n  // No file returned / new workflow\n} else if (Object.keys($input.all()[0].json).includes(\"data\")) {\n  const origWorkflow = JSON.parse($input.all()[0].json.data);\n  const n8nWorkflow = $('n8n').first().json;\n\n  // Order JSON objects\n  const orderedOriginal = orderJsonKeys(origWorkflow);\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  // Determine difference\n  if (JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual)) {\n    $input.all()[0].json.github_status = \"same\";\n  } else {\n    $input.all()[0].json.github_status = \"different\";\n    $input.all()[0].json.n8n_data_stringy = JSON.stringify(\n      orderedActual,\n      null,\n      2,\n    );\n  }\n  $input.all()[0].json.content_decoded = orderedOriginal;\n} else {\n  // Order JSON object\n  const n8nWorkflow = $('n8n').first().json;\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  // Proper formatting\n  $input.all()[0].json.github_status = \"new\";\n  $input.all()[0].json.n8n_data_stringy = JSON.stringify(\n    orderedActual,\n    null,\n    2,\n  );\n}\n\n// Return items\nreturn $input.all();\n"
       },
       "id": "8fd7f1ed-3f8c-4ea1-82ad-df68bcb44e0e",
       "name": "isDiffOrNew",
       "type": "n8n-nodes-base.code",
       "position": [
-        1440,
-        1000
+        1500,
+        920
       ],
       "typeVersion": 1
     },
@@ -461,17 +439,17 @@
         "resource": "file",
         "owner": {
           "__rl": true,
-          "value": "={{ $('Globals').item.json.paultranvan }}",
+          "value": "={{ $('Globals').item.json.repo_owner }}",
           "mode": "name"
         },
         "repository": {
           "__rl": true,
-          "value": "={{ $('Globals').item.json['n8n-workflows'] }}",
+          "value": "={{ $('Globals').item.json['repo_name'] }}",
           "mode": "name"
         },
-        "filePath": "={{ $('Globals').item.json.workflows}}{{$('Loop Over Items').item.json.name}}.json",
+        "filePath": "={{ $('Globals').item.json.path }}{{$('Loop Over Items').item.json.name}}.json",
         "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "={{$('Execute Workflow Trigger').first().json.name}} ({{$json.github_status}})"
+        "commitMessage": "= {{ $workflow.name }}({{$json.github_status}})"
       },
       "id": "f3cf297a-bd55-4278-9ee3-0ba2f103370f",
       "name": "Create new file",
@@ -494,17 +472,17 @@
         "operation": "edit",
         "owner": {
           "__rl": true,
-          "mode": "name",
-          "value": "={{ $('Globals').item.json.repo.owner }}"
+          "value": "={{ $('Globals').item.json.repo_owner }}",
+          "mode": "name"
         },
         "repository": {
           "__rl": true,
-          "mode": "name",
-          "value": "={{ $('Globals').item.json.repo.name }}"
+          "value": "={{ $('Globals').item.json.repo_name }}",
+          "mode": "name"
         },
-        "filePath": "={{ $('Globals').item.json.repo.path }}{{$('Execute Workflow Trigger').first().json.id}}.json",
+        "filePath": "={{ $('Globals').item.json.path }}{{ $workflow.name }}.json",
         "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "={{$('Execute Workflow Trigger').first().json.name}} ({{$json.github_status}})"
+        "commitMessage": "=feat: Upgrade \"{{ $workflow.name }}\" workflow"
       },
       "id": "07dc1f26-1548-4340-98c0-4ebc56131171",
       "name": "Edit existing file",
@@ -549,7 +527,7 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "position": [
         440,
-        460
+        400
       ],
       "typeVersion": 1.2
     },
@@ -591,15 +569,15 @@
         "operation": "get",
         "owner": {
           "__rl": true,
-          "value": "={{ $json.paultranvan }}",
+          "value": "={{ $json.repo_owner }}",
           "mode": "name"
         },
         "repository": {
           "__rl": true,
-          "value": "={{ $json['n8n-workflows'] }}",
+          "value": "={{ $json['repo_name'] }}",
           "mode": "name"
         },
-        "filePath": "={{ $json.workflows }}{{ $('Execute Workflow Trigger').item.json.id }}.json",
+        "filePath": "={{ $json.path}}{{$workflow.name }}.json",
         "asBinaryProperty": false,
         "additionalParameters": {}
       },
@@ -626,19 +604,19 @@
           "assignments": [
             {
               "id": "6cf546c5-5737-4dbd-851b-17d68e0a3780",
-              "name": "paultranvan",
+              "name": "repo_owner",
               "type": "string",
               "value": "paultranvan"
             },
             {
               "id": "452efa28-2dc6-4ea3-a7a2-c35d100d0382",
-              "name": "n8n-workflows",
+              "name": "repo_name",
               "type": "string",
-              "value": "n8n"
+              "value": "n8n-workflows"
             },
             {
               "id": "81c4dc54-86bf-4432-a23f-22c7ea831e74",
-              "name": "workflows",
+              "name": "path",
               "type": "string",
               "value": "=workflows/{{ $json.tags[0].name }}"
             }
@@ -690,7 +668,7 @@
       "type": "n8n-nodes-base.set",
       "position": [
         580,
-        800
+        760
       ],
       "typeVersion": 3.4
     },
@@ -768,6 +746,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-04-05T22:20:05.000Z",
-  "versionId": "d05d03a0-8be3-487b-a1e3-a22479c14dc0"
+  "updatedAt": "2025-04-06T19:58:53.000Z",
+  "versionId": "0c3153c0-7ac4-49a7-8360-82d8403e8e67"
 }
