@@ -283,8 +283,8 @@
       "name": "GitHub - get all files",
       "type": "n8n-nodes-base.github",
       "position": [
-        160,
-        3520
+        260,
+        3420
       ],
       "typeVersion": 1,
       "credentials": {
@@ -400,16 +400,16 @@
     {
       "parameters": {
         "content": "## Get all Github files\n1. List all the files from your repository\n2. Get each file as a JSON. \n3. The content, retrieved as base64, is converted in the \"Set Name and Content\" node\n\n\nThe \"Set Name and Content\" node creates a list of workflows with name and content, in order to compare it with the existing n8n workflows in the workspace.",
-        "height": 479,
-        "width": 1061,
+        "height": 599,
+        "width": 1121,
         "color": 2
       },
       "id": "87c2fc53-2b8a-48d7-b0d7-fb5ae6707bc2",
       "name": "Note1",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        100,
-        3300
+        120,
+        3200
       ],
       "typeVersion": 1
     },
@@ -423,8 +423,8 @@
       "name": "Merge globals and files",
       "type": "n8n-nodes-base.merge",
       "position": [
-        400,
-        3540
+        420,
+        3620
       ],
       "typeVersion": 2.1
     },
@@ -728,6 +728,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-04-06T21:00:00.000Z",
-  "versionId": "4c47884e-bf2c-4f00-aeec-cf8699acaff1"
+  "updatedAt": "2025-04-07T08:43:29.000Z",
+  "versionId": "5c83b3a6-5616-4c4d-9a08-86841110291c"
 }
