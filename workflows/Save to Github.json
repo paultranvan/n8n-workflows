@@ -219,8 +219,8 @@
       "name": "On clicking 'execute'",
       "type": "n8n-nodes-base.manualTrigger",
       "position": [
-        440,
-        240
+        -80,
+        900
       ],
       "typeVersion": 1
     },
@@ -233,8 +233,8 @@
       "name": "n8n",
       "type": "n8n-nodes-base.n8n",
       "position": [
-        660,
-        340
+        140,
+        1000
       ],
       "typeVersion": 1,
       "credentials": {
@@ -262,8 +262,8 @@
       "name": "Return",
       "type": "n8n-nodes-base.set",
       "position": [
-        2420,
-        940
+        2440,
+        880
       ],
       "typeVersion": 3.3
     },
@@ -276,8 +276,8 @@
       "name": "Get File",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        1540,
-        780
+        1420,
+        800
       ],
       "typeVersion": 4.2
     },
@@ -320,8 +320,8 @@
       "name": "If file too large",
       "type": "n8n-nodes-base.if",
       "position": [
-        1320,
-        840
+        1220,
+        1040
       ],
       "typeVersion": 2
     },
@@ -335,7 +335,7 @@
       "type": "n8n-nodes-base.code",
       "position": [
         1560,
-        1020
+        1040
       ],
       "typeVersion": 1
     },
@@ -364,7 +364,7 @@
       "type": "n8n-nodes-base.switch",
       "position": [
         1740,
-        1100
+        1040
       ],
       "typeVersion": 1
     },
@@ -374,8 +374,8 @@
       "name": "Same file - Do nothing",
       "type": "n8n-nodes-base.noOp",
       "position": [
-        1960,
-        940
+        1980,
+        880
       ],
       "typeVersion": 1
     },
@@ -385,8 +385,8 @@
       "name": "File is different",
       "type": "n8n-nodes-base.noOp",
       "position": [
-        1960,
-        1100
+        1980,
+        1040
       ],
       "typeVersion": 1
     },
@@ -396,8 +396,8 @@
       "name": "File is new",
       "type": "n8n-nodes-base.noOp",
       "position": [
-        1960,
-        1260
+        1980,
+        1200
       ],
       "typeVersion": 1
     },
@@ -422,8 +422,8 @@
       "name": "Create new file",
       "type": "n8n-nodes-base.github",
       "position": [
-        2180,
-        1260
+        2200,
+        1200
       ],
       "typeVersion": 1,
       "credentials": {
@@ -455,8 +455,8 @@
       "name": "Edit existing file",
       "type": "n8n-nodes-base.github",
       "position": [
-        2180,
-        1080
+        2200,
+        1020
       ],
       "typeVersion": 1,
       "credentials": {
@@ -480,8 +480,8 @@
       "name": "Schedule Trigger",
       "type": "n8n-nodes-base.scheduleTrigger",
       "position": [
-        440,
-        400
+        -80,
+        1060
       ],
       "typeVersion": 1.2
     },
@@ -496,24 +496,8 @@
       "name": "Sticky Note1",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -180,
-        -40
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "content": "## Main workflow loop",
-        "height": 434.88564057365943,
-        "width": 886.4410237965205,
-        "color": 7
-      },
-      "id": "0af4606f-079c-498e-94ee-17d6c117ff29",
-      "name": "Sticky Note2",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        280,
-        160
+        -40,
+        200
       ],
       "typeVersion": 1
     },
@@ -539,8 +523,8 @@
       "name": "Get file data",
       "type": "n8n-nodes-base.github",
       "position": [
-        1120,
-        840
+        1000,
+        1040
       ],
       "typeVersion": 1,
       "alwaysOutputData": true,
@@ -582,8 +566,8 @@
       "name": "Globals",
       "type": "n8n-nodes-base.set",
       "position": [
-        900,
-        1000
+        780,
+        1040
       ],
       "typeVersion": 3.4
     },
@@ -598,7 +582,7 @@
       "name": "Sticky Note3",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        880,
+        760,
         880
       ],
       "typeVersion": 1
@@ -621,8 +605,8 @@
       "name": "/",
       "type": "n8n-nodes-base.set",
       "position": [
-        660,
-        860
+        600,
+        880
       ],
       "typeVersion": 3.4
     },
@@ -687,37 +671,10 @@
       "name": "tag?",
       "type": "n8n-nodes-base.switch",
       "position": [
-        420,
+        360,
         1000
       ],
       "typeVersion": 3.2
-    },
-    {
-      "parameters": {},
-      "id": "0f3e3dba-d364-4577-9d09-00e82b2c5e9b",
-      "name": "Ok",
-      "type": "n8n-nodes-base.noOp",
-      "position": [
-        1540,
-        320
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "content": "## Subworkflow",
-        "height": 751,
-        "width": 2547,
-        "color": 6
-      },
-      "id": "f4cedc02-6e44-4316-ab88-7ab5224cdf34",
-      "name": "Sticky Note",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        20,
-        760
-      ],
-      "typeVersion": 1
     }
   ],
   "pinData": {},
@@ -727,6 +684,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-04-06T21:21:39.000Z",
-  "versionId": "da3d043e-4371-4596-a3f5-61351edc0aee"
+  "updatedAt": "2025-04-07T08:41:49.000Z",
+  "versionId": "36ccbf13-1d32-41ea-b282-b17adbb56bbf"
 }
