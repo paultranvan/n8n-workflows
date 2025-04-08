@@ -138,11 +138,6 @@
         ]
       ]
     },
-    "Aggregate": {
-      "main": [
-        []
-      ]
-    },
     "n8n - workflows": {
       "main": [
         [
@@ -180,6 +175,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "n8n - create workflow1",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -187,7 +189,7 @@
       "main": [
         [
           {
-            "node": "n8n - create workflow2",
+            "node": "n8n - create workflow1",
             "type": "main",
             "index": 0
           }
@@ -387,8 +389,8 @@
       "name": "n8n - create workflow",
       "type": "n8n-nodes-base.n8n",
       "position": [
-        2080,
-        3880
+        2460,
+        3740
       ],
       "typeVersion": 1,
       "credentials": {
@@ -620,20 +622,6 @@
     },
     {
       "parameters": {
-        "aggregate": "aggregateAllItemData",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        720,
-        4040
-      ],
-      "id": "30d2591b-90fa-418e-8e5d-19436210b611",
-      "name": "Aggregate"
-    },
-    {
-      "parameters": {
         "assignments": {
           "assignments": [
             {
@@ -702,8 +690,8 @@
       "name": "Workflow is different",
       "type": "n8n-nodes-base.noOp",
       "position": [
-        1920,
-        4220
+        2120,
+        4020
       ],
       "typeVersion": 1
     },
@@ -713,8 +701,8 @@
       "name": "Workflow is the same",
       "type": "n8n-nodes-base.noOp",
       "position": [
-        1860,
-        4000
+        1920,
+        3920
       ],
       "typeVersion": 1
     },
@@ -738,15 +726,15 @@
     {
       "parameters": {
         "operation": "create",
-        "workflowObject": "={{ $('Set name and content').item.json.content }}",
+        "workflowObject": "={{ $('Set name and content').item.json.github_content }}",
         "requestOptions": {}
       },
       "id": "b30b776b-5500-45b1-a889-c039a84eb89a",
-      "name": "n8n - create workflow2",
+      "name": "n8n - create workflow1",
       "type": "n8n-nodes-base.n8n",
       "position": [
-        2240,
-        4200
+        2280,
+        4280
       ],
       "typeVersion": 1,
       "credentials": {
@@ -764,6 +752,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-04-08T20:10:27.000Z",
-  "versionId": "09f8288e-4c49-4375-9086-739635115e10"
+  "updatedAt": "2025-04-08T20:37:30.000Z",
+  "versionId": "beda4c84-27dc-4717-95be-1501273a8940"
 }
