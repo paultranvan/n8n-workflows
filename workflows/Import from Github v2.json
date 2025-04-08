@@ -44,11 +44,6 @@
       "main": [
         [
           {
-            "node": "Merge Github and n8n workflows - Keep only non existing workflows based on the name",
-            "type": "main",
-            "index": 1
-          },
-          {
             "node": "n8n - workflows",
             "type": "main",
             "index": 0
@@ -158,6 +153,46 @@
           }
         ]
       ]
+    },
+    "isDiffOrNew": {
+      "main": [
+        [
+          {
+            "node": "Check Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Status": {
+      "main": [
+        [
+          {
+            "node": "Workflow is the same",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Workflow is different",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow is different": {
+      "main": [
+        [
+          {
+            "node": "n8n - create workflow2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-04-07T11:30:26.440Z",
@@ -189,8 +224,8 @@
       "name": "Workflow name already exists",
       "type": "n8n-nodes-base.noOp",
       "position": [
-        1860,
-        3700
+        1820,
+        3460
       ],
       "typeVersion": 1
     },
@@ -223,8 +258,8 @@
       "name": "If workflow already exists",
       "type": "n8n-nodes-base.if",
       "position": [
-        1780,
-        3900
+        1700,
+        3860
       ],
       "typeVersion": 2
     },
@@ -352,8 +387,8 @@
       "name": "n8n - create workflow",
       "type": "n8n-nodes-base.n8n",
       "position": [
-        1940,
-        4060
+        2080,
+        3880
       ],
       "typeVersion": 1,
       "credentials": {
@@ -540,8 +575,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1440,
-        4160
+        1480,
+        4280
       ],
       "id": "8441d8f6-cd72-4eaa-bba2-c030f3caa3e3",
       "name": "Workflow are the same"
@@ -549,13 +584,13 @@
     {
       "parameters": {
         "mode": "runOnceForEachItem",
-        "jsCode": "const orderJsonKeys = (jsonObj) => {\n  const ordered = {};\n  Object.keys(jsonObj)\n    .sort()\n    .forEach((key) => {\n      ordered[key] = jsonObj[key];\n    });\n  return ordered;\n};\n\n// Check if file returned with content\nif (Object.keys($json).includes(\"content\")) {\n  // Decode base64 content and parse JSON\n  const origWorkflow = JSON.parse(\n    Buffer.from($json.content, \"base64\").toString(),\n  );\n  const n8nWorkflow = $('n8n - workflows').item.json;\n\n  // Order JSON objects\n  const orderedOriginal = orderJsonKeys(origWorkflow);\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  console.log('original ', orderedOriginal);\n  console.log('actual ', orderedActual);\n\n  // Determine difference\n  if (JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual)) {\n    console.log('SAME')\n    $json.github_status = \"same\";\n  } else {\n    console.log('DIFFERENT')\n    $json.github_status = \"different\";\n    $json.n8n_data_stringy = JSON.stringify(\n      orderedActual,\n      null,\n      2,\n    );\n  }\n  $json.content_decoded = orderedOriginal;\n  // No file returned / new workflow\n} else if (Object.keys($json).includes(\"github_content\")) {\n  const origWorkflow = JSON.parse($json.data);\n  const n8nWorkflow = $('n8n - workflows').item.json;\n\n  // Order JSON objects\n  const orderedOriginal = orderJsonKeys(origWorkflow);\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  // Determine difference\n  if (JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual)) {\n    $json.github_status = \"same\";\n  } else {\n    $json.github_status = \"different\";\n    $json.n8n_data_stringy = JSON.stringify(\n      orderedActual,\n      null,\n      2,\n    );\n  }\n  $json.content_decoded = orderedOriginal;\n} else {\n  // Order JSON object\n  const n8nWorkflow = $('n8n - workflows').item.json;\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  // Proper formatting\n  $json.github_status = \"new\";\n  $json.n8n_data_stringy = JSON.stringify(\n    orderedActual,\n    null,\n    2,\n  );\n}\n\n// Return items\nreturn $json\n"
+        "jsCode": "const orderJsonKeys = (jsonObj) => {\n  const ordered = {};\n  Object.keys(jsonObj)\n    .sort()\n    .forEach((key) => {\n      ordered[key] = jsonObj[key];\n    });\n  return ordered;\n};\n\n// Check if file returned with content\nif (Object.keys($json).includes(\"content\")) {\n  // Decode base64 content and parse JSON\n  const origWorkflow = JSON.parse(\n    Buffer.from($json.content, \"base64\").toString(),\n  );\n  const n8nWorkflow = $(\"n8n - workflows\").item.json;\n\n  // Order JSON objects\n  const orderedOriginal = orderJsonKeys(origWorkflow);\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  console.log(\"original \", orderedOriginal);\n  console.log(\"actual \", orderedActual);\n\n  // Determine difference\n  if (JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual)) {\n    console.log(\"SAME\");\n    $json.github_status = \"same\";\n  } else {\n    console.log(\"DIFFERENT\");\n    $json.github_status = \"different\";\n    $json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n  }\n  $json.content_decoded = orderedOriginal;\n  // No file returned / new workflow\n} else if (Object.keys($json).includes(\"github_content\")) {\n  const origWorkflow = JSON.parse($json.github_content);\n  const n8nWorkflow = JSON.parse($(\"n8n - workflows\").item.json.n8n_content);\n\n  // Order JSON objects\n  const orderedOriginal = orderJsonKeys(origWorkflow);\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  console.log(\"original  : \", orderedOriginal);\n  console.log(\"actual  : \", orderedActual);\n\n  // Determine difference\n  if (JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual)) {\n    $json.github_status = \"same\";\n  } else {\n    $json.github_status = \"different\";\n    $json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n  }\n  $json.content_decoded = orderedOriginal;\n} else {\n  // Order JSON object\n  const n8nWorkflow = $(\"n8n - workflows\").item.json;\n  const orderedActual = orderJsonKeys(n8nWorkflow);\n\n  // Proper formatting\n  $json.github_status = \"new\";\n  $json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n}\n\n// Return items\nreturn $json;\n"
       },
       "id": "3396a0ab-1100-4937-9150-13536679e888",
       "name": "isDiffOrNew",
       "type": "n8n-nodes-base.code",
       "position": [
-        1180,
+        1360,
         4060
       ],
       "typeVersion": 1
@@ -612,6 +647,12 @@
               "name": "=n8n_content",
               "value": "={{ $json }}",
               "type": "string"
+            },
+            {
+              "id": "700e9e11-069f-4990-a4fa-e1417ee8abcf",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
             }
           ]
         },
@@ -625,6 +666,95 @@
       ],
       "id": "ad857bdd-ef0c-4fde-8f95-d7b0cdace81b",
       "name": "n8n - workflows"
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{$json.github_status}}",
+        "rules": {
+          "rules": [
+            {
+              "value2": "same"
+            },
+            {
+              "value2": "different",
+              "output": 1
+            },
+            {
+              "value2": "new",
+              "output": 2
+            }
+          ]
+        }
+      },
+      "id": "f3a5df06-0f3c-40c0-83c5-bd300fb6cf54",
+      "name": "Check Status",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        1640,
+        4060
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "52cddedb-078d-470d-90b2-5caca339999a",
+      "name": "Workflow is different",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        1920,
+        4220
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "bd74af43-d5cc-44d0-8c55-331304a0902d",
+      "name": "Workflow is the same",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        1860,
+        4000
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "test",
+        "completionMessage": "test coucou",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "fad423d5-6147-4776-949e-6c9894b73269",
+      "name": "Form",
+      "webhookId": "8690799f-a1c9-45c3-97d8-0b8bc22db6fb"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "workflowObject": "={{ $('Set name and content').item.json.content }}",
+        "requestOptions": {}
+      },
+      "id": "b30b776b-5500-45b1-a889-c039a84eb89a",
+      "name": "n8n - create workflow2",
+      "type": "n8n-nodes-base.n8n",
+      "position": [
+        2240,
+        4200
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "n8nApi": {
+          "id": "wEXwku8juyrJR0Wk",
+          "name": "n8n account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -634,6 +764,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-04-07T21:28:27.000Z",
-  "versionId": "0ec8818a-065b-436f-95dd-9fdcfc1effd5"
+  "updatedAt": "2025-04-08T20:10:27.000Z",
+  "versionId": "09f8288e-4c49-4375-9086-739635115e10"
 }
