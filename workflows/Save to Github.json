@@ -147,7 +147,7 @@
       "main": [
         [
           {
-            "node": "Edit existing file",
+            "node": "Workflow content",
             "type": "main",
             "index": 0
           }
@@ -199,6 +199,28 @@
         [
           {
             "node": "Return",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow content": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Edit existing file",
             "type": "main",
             "index": 0
           }
@@ -262,8 +284,8 @@
       "name": "Return",
       "type": "n8n-nodes-base.set",
       "position": [
-        2440,
-        880
+        2900,
+        840
       ],
       "typeVersion": 3.3
     },
@@ -422,8 +444,8 @@
       "name": "Create new file",
       "type": "n8n-nodes-base.github",
       "position": [
-        2200,
-        1200
+        2420,
+        1280
       ],
       "typeVersion": 1,
       "credentials": {
@@ -455,8 +477,8 @@
       "name": "Edit existing file",
       "type": "n8n-nodes-base.github",
       "position": [
-        2200,
-        1020
+        2580,
+        940
       ],
       "typeVersion": 1,
       "credentials": {
@@ -675,6 +697,43 @@
         1000
       ],
       "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e84e5fd5-3918-4287-8ed4-95e64ed5e24a",
+              "name": "workflow",
+              "value": "={{ $('n8n').item.json }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2180,
+        1060
+      ],
+      "id": "6d9993c9-62d1-4d35-900b-7a5214f8dd87",
+      "name": "Workflow content"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Add a new field called 'myNewField' to the JSON of the item\n\nconsole.log('input : ', $input.item.json)\nconst workflowStr = $input.item.json.workflow\nconst workflow = JSON.parse(workflowStr)\nconst name = workflow.name\n\nconst tokens = name.split(' -- ')\nlet newName = `${tokens[0]} -- ${$('File is different').item.json.sha}`\nconsole.log('name : ', workflow.name)\nconsole.log('new name : ', newName)\nworkflow.name = newName\n$input.item.json.workflow = JSON.stringify(workflow)\n\nreturn $input.item;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2400,
+        1060
+      ],
+      "id": "0a7834eb-9988-48d6-bd97-cfb595174118",
+      "name": "Code"
     }
   ],
   "pinData": {},
@@ -684,6 +743,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-04-07T08:41:49.000Z",
-  "versionId": "36ccbf13-1d32-41ea-b282-b17adbb56bbf"
+  "updatedAt": "2025-04-08T20:30:19.000Z",
+  "versionId": "3895e1eb-a47d-41a5-a316-70294857695d"
 }
